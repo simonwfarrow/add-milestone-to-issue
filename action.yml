@@ -1,13 +1,19 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'add-milestone-to-issue'
+description: 'Add a milestone to an issue'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  repo:  # repo name
+    description: 'Repository'
     required: true
-    default: '1000'
+  gh_token:
+    description: 'PAT'
+    required: true
+  owner:
+    description: 'Repo owner'
+    required: true
+  milestone_number:
+    description: 'id of milestone to fetch'
+    required: true
 outputs:
-  time: # output will be available to future steps
-    description: 'The current time after waiting'
 runs:
   using: 'node16'
   main: 'dist/index.js'

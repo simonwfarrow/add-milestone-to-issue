@@ -1,18 +1,39 @@
 const core = require('@actions/core');
-const wait = require('./wait');
-
+const github = require('@actions/github');
 
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    const ms = core.getInput('milliseconds');
-    core.info(`Waiting ${ms} milliseconds ...`);
+    const myToken = core.getInput('gh_token');
+    const owner = core.getInput('owner');
+    const repo = core.getInput('repo');
+    const milestone_number = core.getInput('milestone_number');
 
-    core.debug((new Date()).toTimeString()); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-    await wait(parseInt(ms));
-    core.info((new Date()).toTimeString());
+    const octokit = github.getOctokit(myToken);
 
-    core.setOutput('time', new Date().toTimeString());
+    console.log(`Getting milestone number ${milestone_number}`);
+
+    const { data: milestone } = await octokit.rest.issues.getMilestone({
+      owner,
+      repo,
+      milestone_number,
+    });
+    console.debug(`Milestone payload is ${JSON.stringify(milestone,undefined,2)}`);
+
+    const payload = JSON.stringify(github.context.payload, undefined, 2)
+    console.debug(`Event payload is ${payload}`)
+
+    const issue_number = github.context.payload.issue.number;
+    console.log(`Updating issue ${issue_number} with milestone ${milestone_number}`)
+
+    await octokit.rest.issues.update({
+      owner,
+      repo,
+      issue_number,
+      milestone
+    });
+
+
   } catch (error) {
     core.setFailed(error.message);
   }
