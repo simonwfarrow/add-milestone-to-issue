@@ -9712,13 +9712,13 @@ async function run() {
     const issue_number = github.context.payload.issue.number;
     console.log(`Updating issue ${issue_number} with milestone ${milestone_number}`)
 
-    await octokit.rest.issues.update({
+    const { data: issue }= await octokit.rest.issues.update({
       owner,
       repo,
       issue_number,
       milestone_number
     });
-
+    console.debug(`Updated Issue ${JSON.stringify(issue, undefined, 2)}`)
 
   } catch (error) {
     core.setFailed(error.message);
