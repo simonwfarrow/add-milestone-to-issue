@@ -27,10 +27,10 @@ async function run() {
     console.log(`Updating issue ${issue_number} with milestone ${milestone_number}`)
 
     const { data: issue }= await octokit.rest.issues.update({
-      owner,
-      repo,
-      issue_number,
-      milestone_number
+      owner: owner,
+      repo: repo,
+      issue_number: issue_number,
+      milestone: milestone_number
     });
     console.debug(`Updated Issue ${JSON.stringify(issue, undefined, 2)}`)
 
