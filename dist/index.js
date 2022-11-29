@@ -9716,7 +9716,7 @@ async function run() {
       owner,
       repo,
       issue_number,
-      milestone
+      milestone_number
     });
 
 
