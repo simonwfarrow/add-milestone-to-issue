@@ -13,7 +13,6 @@ inputs:
   milestone_number:
     description: 'id of milestone to fetch'
     required: true
-outputs:
 runs:
   using: 'node16'
   main: 'dist/index.js'
